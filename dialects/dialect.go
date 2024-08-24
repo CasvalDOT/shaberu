@@ -1,11 +1,11 @@
 package dialects
 
 import (
+	"strconv"
 	"strings"
 )
 
-type dialect struct {
-}
+type dialect struct{}
 
 type IDialect interface {
 	Read(*string, *string) (map[string]string, error)
@@ -22,6 +22,12 @@ func (d *dialect) flat(data map[string]interface{}, startKey string, final map[s
 		switch value := value.(type) {
 		case string:
 			final[keyToUse] = value
+		case []interface{}:
+			tmp := map[string]interface{}{}
+			for i, v := range value {
+				tmp[strconv.Itoa(i)] = v
+			}
+			d.flat(tmp, keyToUse, final)
 		default:
 			d.flat(value.(map[string]interface{}), keyToUse, final)
 		}
@@ -31,7 +37,6 @@ func (d *dialect) flat(data map[string]interface{}, startKey string, final map[s
 }
 
 func (d *dialect) unflat(data map[string]string, final map[string]interface{}) map[string]interface{} {
-
 	for key, value := range data {
 		keySplitted := strings.Split(key, ".")
 
