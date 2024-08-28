@@ -3,7 +3,6 @@ package dialects
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
@@ -12,7 +11,6 @@ type jsondialect struct {
 }
 
 func (d *jsondialect) Write(path *string, content map[string]string) error {
-
 	final := map[string]interface{}{}
 	unflattedContent := d.dialect.unflat(content, final)
 
@@ -36,7 +34,7 @@ func (d *jsondialect) Write(path *string, content map[string]string) error {
 }
 
 func (d *jsondialect) Read(path *string, separator *string) (map[string]string, error) {
-	contents, err := ioutil.ReadFile(*path)
+	contents, err := os.ReadFile(*path)
 	if err != nil {
 		return nil, err
 	}

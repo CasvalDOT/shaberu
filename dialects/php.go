@@ -2,7 +2,6 @@ package dialects
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"regexp"
 )
@@ -65,7 +64,7 @@ func (d *phpdialect) Read(path *string, separator *string) (map[string]string, e
 		];
 	*/
 
-	contents, err := ioutil.ReadFile(*path)
+	contents, err := os.ReadFile(*path)
 	if err != nil {
 		return nil, err
 	}

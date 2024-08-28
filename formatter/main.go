@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 )
@@ -37,7 +36,6 @@ func (f *formatter) Format(filePath *string) {
 }
 
 func (f *formatter) load() formatConf {
-
 	homePath, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("Cannot get user home directory:", err.Error())
@@ -50,7 +48,7 @@ func (f *formatter) load() formatConf {
 		os.Create(confPath)
 	}
 
-	content, err := ioutil.ReadFile(confPath)
+	content, err := os.ReadFile(confPath)
 	if err != nil {
 		fmt.Println("Cannot get formatter configuration:", err.Error())
 		os.Exit(2)
